@@ -1,0 +1,7 @@
+# training data
+data/**
+
+# vscode settings
+.vscode/**
+*.code-workspace
+.python-version
