@@ -1,0 +1,28 @@
+                                 precision    recall  f1-score   support
+
+                        epitaph       0.84      0.98      0.91       389
+          honorific inscription       1.00      1.00      1.00         2
+             votive inscription       0.83      1.00      0.91        10
+                        defixio       0.78      0.99      0.88       176
+       owner/artist inscription       0.87      0.89      0.88      2126
+              mile-/leaguestone       0.48      1.00      0.65        10
+                    acclamation       0.81      1.00      0.89       234
+           boundary inscription       0.55      1.00      0.71        67
+building/dedicatory inscription       1.00      0.96      0.98     21268
+               military diploma       0.90      0.96      0.93      2699
+     identification inscription       0.79      0.86      0.82      1087
+       public legal inscription       0.65      0.99      0.78       188
+      private legal inscription       0.74      1.00      0.85        90
+                          label       0.90      1.00      0.95       251
+                           list       0.87      0.98      0.92      1340
+                       calendar       0.97      1.00      0.99       399
+               seat inscription       0.84      0.92      0.87      3663
+                        elogium       0.60      1.00      0.75        40
+        assignation inscription       0.96      1.00      0.98        26
+                         prayer       0.92      1.00      0.96       166
+                         letter       0.38      0.92      0.54        59
+                    adnuntiatio       0.99      0.95      0.97     10550
+
+                       accuracy                           0.95     44840
+                      macro avg       0.80      0.97      0.87     44840
+                   weighted avg       0.95      0.95      0.95     44840

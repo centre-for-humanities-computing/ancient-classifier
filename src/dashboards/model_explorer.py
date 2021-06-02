@@ -9,17 +9,23 @@ from imblearn.pipeline import Pipeline
 from sklearn.feature_extraction.text import CountVectorizer,TfidfTransformer
 
 from plots import plot_bar_confidence
+from util import extract_decision_function
 
 # ===
 # Externals
 # ===
-with open('mdl/210602_ridge.pcl', 'rb') as fin:
-    classifier = pickle.load(fin)
 
-with open('mdl/210602_preprocessing.pcl', 'rb') as fin:
-    preprocessing = pickle.load(fin)
+with open('mdl/conservative_oversampled/210603_ridge.pcl', 'rb') as fin:
+    mdl_clf_conservative = pickle.load(fin)
 
-labels = classifier.classes_
+with open('mdl/conservative_oversampled/210603_preprocessing.pcl', 'rb') as fin:
+    mdl_prep_conservative = pickle.load(fin)
+
+with open('mdl/interpretive_oversampled/210602_ridge.pcl', 'rb') as fin:
+    mdl_clf_interpretive = pickle.load(fin)
+
+with open('mdl/interpretive_oversampled/210602_preprocessing.pcl', 'rb') as fin:
+    mdl_prep_interpretive = pickle.load(fin)
 
 # ===
 # Streamlit config
@@ -31,29 +37,60 @@ st.set_page_config(
 )
 
 # ===
+# Sidebar
+# ===
+with st.sidebar:
+    # track which model to use 
+    model_choice = st.selectbox(
+        'Which model do you want to use?',
+        ('As-is on inscriptions (conservative text)', 'Full sentences (interpretive text)')
+    )
+
+    if model_choice == 'As-is on inscriptions (conservative text)':
+        default_input = 'Accae l Myrine Accae l Sympherusae M Ant M l Ero poma'
+
+    elif model_choice == 'Full sentences (interpretive text)':
+        default_input = 'Accae mulieris libertae Myrine Accae mulieris libertae Sympherusae Marco Antonio Marci liberto Ero pomario'
+
+
+# ===
 # Classify input
 # ===
 st.title('Ancient Classifier')
 st.write('Label ancient Mediterranean roadside inscriptions. [Source code](https://github.com/centre-for-humanities-computing/ancient-classifier/), forked from the [Epigraphic Roads](https://github.com/sdam-au/epigraphic_roads/) project.')
 
-default_input = 'Accae l Myrine Accae l Sympherusae M Ant M l Ero poma'
-user_input = st.text_area("Input conservative text", default_input)
+user_input = st.text_area("Input text", default_input)
 
 if not isinstance(user_input, str):
     raise TypeError('Input not string')
 
+if len(user_input) > 1000:
+    raise MemoryError('Input text too long. Max 1000 characters allowed')
 
 if st.button('Classify!'):
 
-    X = preprocessing.transform([user_input])
+    if model_choice == 'As-is on inscriptions (conservative text)':
+        transformer = mdl_prep_conservative
+        model = mdl_clf_conservative
+    elif model_choice == 'Full sentences (interpretive text)':
+        transformer = mdl_prep_interpretive
+        model = mdl_clf_interpretive
 
-    y_pred = classifier.predict(X)
-    y_pred_confidence = classifier.decision_function(X)
+    y_pred, confidence_df = extract_decision_function(
+        transformer,
+        model,
+        user_input
+    )
 
-    confidence_df = pd.DataFrame(y_pred_confidence, columns=labels)
-    confidence_df = confidence_df.melt(value_name='confidence', var_name='type')
+    st.write('\n\n')
+    st.markdown("""---""")
 
-    st.write(f'Inscription was classified as {y_pred}')
+    st.subheader('Text was classified as')
+    st.code(f'{y_pred}')
+    st.write('\n\n')
+
+    st.subheader('Confidence')
+    st.write('\n')
     st.write(
         plot_bar_confidence(confidence_df)
     )
