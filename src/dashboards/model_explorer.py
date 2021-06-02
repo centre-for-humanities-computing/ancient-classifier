@@ -53,7 +53,7 @@ if st.button('Classify!'):
     confidence_df = pd.DataFrame(y_pred_confidence, columns=labels)
     confidence_df = confidence_df.melt(value_name='confidence', var_name='type')
 
-    st.write(f'Instription was classified as {y_pred}')
+    st.write(f'Inscription was classified as {y_pred}')
     st.write(
         plot_bar_confidence(confidence_df)
     )
