@@ -1,0 +1,1 @@
+web: sh setup.sh && streamlit run src/dashboards/model_explorer.py
