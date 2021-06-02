@@ -12,6 +12,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.linear_model import RidgeClassifier, Lasso
 from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.neighbors import KNeighborsClassifier
+from xgboost import XGBClassifier
 
 # resampling
 from imblearn.under_sampling import RandomUnderSampler
@@ -25,7 +26,7 @@ from sklearn.model_selection import GridSearchCV
 class GridSearchClassifier():
 
     def __init__(self,
-                clfs=['bernoulli', 'dtree', 'ridge', 'etree', 'knn', 'lasso'],
+                clfs=['bernoulli', 'dtree', 'ridge', 'etree', 'knn', 'lasso', 'xgboost'],
                 resamplers=['over', 'under', 'smote'],
                 cv=5,
                 scoring='accuracy',
@@ -74,7 +75,8 @@ class GridSearchClassifier():
                     "ridge": RidgeClassifier,
                     'etree': ExtraTreesClassifier,
                     'knn': KNeighborsClassifier,
-                    'lasso': Lasso
+                    'lasso': Lasso,
+                    'xgboost': XGBClassifier
                     }
 
         # delive ordered classifier
@@ -120,7 +122,7 @@ class GridSearchClassifier():
 
 
     def grid_search_1_clf(self, X, y, clf_tag, sampler_tag,
-    kwargs_sampler={}, kwargs_clf={}, kwargs_cv={}):
+    kwargs_sampler={}, kwargs_clf={}, kwargs_cv={}, kwargs_fit={}):
         '''
         Grid search with 1 classifier & it's parameter grid,
         using one resampling strategy.
@@ -187,7 +189,7 @@ class GridSearchClassifier():
             )
 
         print(f'[info] fitting {clf_tag}, with resampler {sampler_tag}')
-        clf_res = gs_clf.fit(X, y)
+        clf_res = gs_clf.fit(X, y, **kwargs_fit)
 
         return clf_res.cv_results_
         # return (clf_res.best_score_, clf_res.best_params_, clf_res)

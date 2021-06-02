@@ -33,5 +33,11 @@ search_params_clf = {
         'n_neighbors': [5, 10, 20],
         'p': [1, 2],
         'leaf_size': [10, 30, 50],
-        }
+        },
+    'lasso': {
+        'alpha': [0.01, 0.1, 1, 10],
+        'normalize': [True, False],
+        'fit_intercept': [True, False]
+        },
+    'xgboost': {}
     }
