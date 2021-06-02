@@ -13,10 +13,10 @@ from plots import plot_bar_confidence
 # ===
 # Externals
 # ===
-with open('../mdl/210602_ridge.pcl', 'rb') as fin:
+with open('mdl/210602_ridge.pcl', 'rb') as fin:
     classifier = pickle.load(fin)
 
-with open('../mdl/210602_preprocessing.pcl', 'rb') as fin:
+with open('mdl/210602_preprocessing.pcl', 'rb') as fin:
     preprocessing = pickle.load(fin)
 
 labels = classifier.classes_
@@ -51,7 +51,7 @@ if st.button('Classify!'):
     y_pred_confidence = classifier.decision_function(X)
 
     confidence_df = pd.DataFrame(y_pred_confidence, columns=labels)
-    confidence_df = confidence_df.melt(value_name='confidence', var_name='label')
+    confidence_df = confidence_df.melt(value_name='confidence', var_name='type')
 
     st.write(f'Instription was classified as {y_pred}')
     st.write(

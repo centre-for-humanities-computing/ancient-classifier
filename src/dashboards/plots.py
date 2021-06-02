@@ -3,9 +3,9 @@ import altair as alt
 def plot_bar_confidence(source):
 
     plot = alt.Chart(source).mark_bar().encode(
-        x="label",
+        x="type",
         y="confidence",
-        tooltip=['label', 'confidence'],
+        tooltip=['type', 'confidence'],
         color=alt.condition(
             alt.datum.confidence > 0,
             alt.value("steelblue"),  # The positive color
