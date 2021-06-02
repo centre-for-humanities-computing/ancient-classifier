@@ -1,6 +1,9 @@
 # training data
 data/**
 
+# cache
+**/__pycache__/**
+
 # vscode settings
 .vscode/**
 *.code-workspace
